@@ -104,3 +104,6 @@ O objetivo do projeto é simular um ambiente real de clínica, organizando desde
 Este projeto foi desenvolvido com fins educacionais, com o objetivo de praticar conceitos de desenvolvimento backend, organização de código e construção de APIs REST.
 
 ---
+
+## Carlos Henrique
+###carloshenriquesouza016gmail.com
