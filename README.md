@@ -8,7 +8,7 @@ O objetivo do projeto é simular um ambiente real de clínica, organizando desde
 ---
 
 ## ⚙️ Funcionalidades
-
+ 
 ### 👤 Gestão de Pacientes
 - Cadastro de pacientes  
 - Listagem de pacientes  
