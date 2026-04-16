@@ -1,5 +1,6 @@
 ﻿using clinicaDocMais.Models;
 using ClinicaDocMais.Models;
+using ClinicaDocMais.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -32,46 +33,44 @@ namespace clinicaDocMais.Controllers
         }
         //editar medico
 
-        [HttpPut("editarMedico/{id}")]
-        public string editarMedico([FromBody] Paciente medicoEditado, string id)
+        [HttpPut("editarMedico/{crm}")]
+        public string editarMedico([FromBody] MedicoModel medicoEditado, string crm)
         {
-            foreach (var Medico in listaMedicos)
-            {
-                if (Medico.crm == id)
-                {
-                    Medico.crm = medicoEditado.crm;
-                    Medico.nome = medicoEditado.nome;
-                    Medico.telefone = medicoEditado.telefone;
-                    Medico.email = medicoEditado.email;
-                    Medico.Especialidade = medicoEditado.especialidade;
+            MedicoService medico = new MedicoService();
+            medico.editarMedico(medicoEditado, crm);
 
-                    Medico.endereco = medicoEditado.endereco;
-                    return $"medico{Medico.nome},crm anterior: {id} editado com sucesso";
-                }
+            if (medico == null)
+            {
+                return "Médico não encontrado";
             }
-            return "medico nao encontrado.";
+            else
+            {
+                return $"Médico de CRM Nº {crm} editado com sucesso";
+            }
         }
+    
+        
         //excluir medico
-        [HttpDelete("deletarMedico/{id}")]
-        public string deletarMedico(string id)
+        [HttpDelete("deletarMedico/{crm}")]
+        public string deletarMedico(string crm)
         {
             foreach (var medico in listaMedicos)
             {
-                if (medico.crm == id)
+                if (medico.crm == crm)
                 {
                     listaMedicos.Remove(medico);
-                    return $"medico com crm {id} removido com sucesso";
+                    return $"medico com crm {crm} removido com sucesso";
                 }
             }
             return "medico nao encotrado.";
         }
 
-        [HttpGet("buscaMedico/{id}")]
-        public MedicoModel? BuscarMedico(string id)
+        [HttpGet("buscaMedico/{crm}")]
+        public MedicoModel? BuscarMedico(string crm)
         {
             foreach (var medico in listaMedicos)
             {
-                if (medico.crm != id)
+                if (medico.crm != crm)
                 {
                     continue;
                 }

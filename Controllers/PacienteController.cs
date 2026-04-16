@@ -6,11 +6,13 @@ namespace ClinicaDocMais.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class EmergenciaController : Controller
+    public class PacienteController : Controller
     {
-        public static List<Paciente> listaPaciente = new List<Paciente>();
+        public static List<PacienteModel> listaPaciente = new List<PacienteModel>();
 
-        [HttpGet("retornoCasa")]
+        // cadastrarPaciente //
+
+        [HttpGet("listarPaciente")]
         public string casa()
         {
             return "casa";
@@ -31,19 +33,9 @@ namespace ClinicaDocMais.Controllers
             return listaPacientes;
         }
 
-        [HttpGet("pacientes")]
-        public List<Paciente> listarPaciente()
-        {
-            Paciente novoPaciente = new Paciente("1019210", "Giovanni", "10/04/1999", "Vermelha");
-            List<Paciente> listaPaciente = new List<Paciente>();
-            listaPaciente.Add(novoPaciente);
-            novoPaciente = new Paciente("1020220", "Eduarda", "15/03/1990", "Verde");
-            listaPaciente.Add(novoPaciente);
-            return listaPaciente;
-        }
 
         [HttpGet("buscaPaciente /{id}")]
-        public Paciente? buscarPacientes(string id)
+        public PacienteModel? buscarPacientes(string id)
         {
             foreach (var paciente in listaPaciente)
             {
@@ -57,7 +49,7 @@ namespace ClinicaDocMais.Controllers
         }
 
         [HttpGet("editarPaciente/{id}")]
-        public string editarPaciente([FromBody] Paciente pacienteEditado, string id)
+        public string editarPaciente([FromBody] PacienteModel pacienteEditado, string id)
         {
             foreach (var paciente in listaPaciente)
             {
@@ -67,7 +59,6 @@ namespace ClinicaDocMais.Controllers
                     paciente.nome = pacienteEditado.nome;
                     paciente.telefone = pacienteEditado.telefone;
                     paciente.email = pacienteEditado.email;
-                    paciente.prioridade = pacienteEditado.prioridade;
                     paciente.dataNascimento = pacienteEditado.dataNascimento;
                     paciente.endereco = pacienteEditado.endereco;
                     return $"Paciente {paciente.nome}, cpf anterior: {id} editado com sucesso";
