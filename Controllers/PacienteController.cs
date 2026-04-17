@@ -6,13 +6,11 @@ namespace ClinicaDocMais.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class PacienteController : Controller
+    public class EmergenciaController : Controller
     {
         public static List<PacienteModel> listaPaciente = new List<PacienteModel>();
 
-        // cadastrarPaciente //
-
-        [HttpGet("listarPaciente")]
+        [HttpGet("retornoCasa")]
         public string casa()
         {
             return "casa";
@@ -33,13 +31,19 @@ namespace ClinicaDocMais.Controllers
             return listaPacientes;
         }
 
+        [HttpGet("pacientes")]
+        public List<PacienteModel> listarPaciente()
+        {
+           
+            return listaPaciente;
+        }
 
-        [HttpGet("buscaPaciente /{id}")]
-        public PacienteModel? buscarPacientes(string id)
+        [HttpGet("buscaPaciente/{id}")]
+        public PacienteModel? buscarPaciente(string id)
         {
             foreach (var paciente in listaPaciente)
             {
-                if (paciente.cpf == id) ;
+                if (paciente.cpf == id)
                 {
                     return paciente;
                 }
@@ -48,7 +52,7 @@ namespace ClinicaDocMais.Controllers
             return null;
         }
 
-        [HttpGet("editarPaciente/{id}")]
+        [HttpPut("editarPaciente/{id}")]
         public string editarPaciente([FromBody] PacienteModel pacienteEditado, string id)
         {
             foreach (var paciente in listaPaciente)
@@ -62,11 +66,12 @@ namespace ClinicaDocMais.Controllers
                     paciente.dataNascimento = pacienteEditado.dataNascimento;
                     paciente.endereco = pacienteEditado.endereco;
                     return $"Paciente {paciente.nome}, cpf anterior: {id} editado com sucesso";
-
                 }
             }
+
             return "Paciente não encontrado.";
         }
+
         [HttpDelete("deletarPaciente/{id}")]
         public string deletarPaciente(string id)
         {
@@ -75,11 +80,10 @@ namespace ClinicaDocMais.Controllers
                 if (paciente.cpf == id)
                 {
                     listaPaciente.Remove(paciente);
-                    return $"Paciente com CPF {id} removido com sucesso!";
+                    return $"Paciente com cpf: {id} deletado com sucesso";
                 }
             }
-
-            return "Paciente não encontrado.";
-        }                                              
+            return "Paciente não encontrado";
+        }
     }
 }

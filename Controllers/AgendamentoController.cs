@@ -1,4 +1,5 @@
 ﻿using clinicaDocMais.Models;
+using ClinicaDocMais.DTOs;
 using ClinicaDocMais.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,20 +15,22 @@ namespace ClinicaDocMais.Controllers
         public static List<AgendamentoModel> listaDeAgendamento = new List<AgendamentoModel>();
 
         [HttpPost("agendarconsulta")]
-        public async Task<IActionResult> AgendarConsulta([FromBody] PacienteModel pacienteAgendado, MedicoModel medicoAgendado, DateTime dataHoraAgendada)
+        public async Task<IActionResult> AgendarConsulta([FromBody] AgendamentoDTO dadosAgendamento)
         {
             try
             {
-                AgendamentoModel agendamentoAtual = new AgendamentoModel();
-                agendamentoAtual.nomePaciente = pacienteAgendado.nome;
-                agendamentoAtual.nomeMedico = medicoAgendado.nome;
-                agendamentoAtual.telefonePaciente = pacienteAgendado.telefone;
-                agendamentoAtual.cpfPaciente = pacienteAgendado.nome;
-                agendamentoAtual.crmMedico = medicoAgendado.crm;
-                agendamentoAtual.especialidadeMedico = medicoAgendado.especialidade;
-                agendamentoAtual.dataHoraAgendamento = dataHoraAgendada;
-                listaDeAgendamento.Add(agendamentoAtual);
+                AgendamentoModel agendamento = new AgendamentoModel();
+                agendamento.nomePaciente = dadosAgendamento.paciente?.nome;
+                agendamento.telefonePaciente = dadosAgendamento.paciente?.telefone;
+                agendamento.cpfPaciente = dadosAgendamento.paciente?.cpf;
+                agendamento.nomeMedico = dadosAgendamento.medico?.nome;
+                agendamento.crmMedico = dadosAgendamento.medico?.crm;
+                agendamento.especialidadeMedico = dadosAgendamento.medico?.especialidade;
+                agendamento.dataHoraAgendamento = dadosAgendamento.dataHoraAgendada;
+
+                listaDeAgendamento.Add(agendamento);
                 return Created();
+
             }
             catch (Exception ex)
             {
